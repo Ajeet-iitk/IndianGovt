@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Government Websites</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .tagline {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .search-box {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        #searchInput {
+            width: 100%;
+            max-width: 600px;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            outline: none;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: none;
+            background: white;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .filter-btn.active {
+            background: #FF9933;
+            color: white;
+        }
+
+        .websites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .website-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .website-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .icon {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .website-name {
+            font-weight: 600;
+            font-size: 1em;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .website-desc {
+            font-size: 0.85em;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #e0e7ff;
+            color: #667eea;
+            border-radius: 12px;
+            font-size: 0.75em;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        .no-results {
+            text-align: center;
+            color: white;
+            font-size: 1.2em;
+            padding: 40px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .websites-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .website-card {
+                padding: 20px;
+            }
+
+            .icon {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🇮🇳 Indian Government Websites</h1>
+            <p class="tagline">Your comprehensive directory of official government portals</p>
+        </header>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search for government websites...">
+        </div>
+
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-category="all">All</button>
+            <button class="filter-btn" data-category="central">Central Govt</button>
+            <button class="filter-btn" data-category="services">Services</button>
+            <button class="filter-btn" data-category="finance">Finance & Tax</button>
+            <button class="filter-btn" data-category="education">Education</button>
+            <button class="filter-btn" data-category="transport">Transport</button>
+            <button class="filter-btn" data-category="health">Health</button>
+        </div>
+
+        <div class="websites-grid" id="websitesGrid"></div>
+        <div class="no-results" id="noResults">No websites found matching your search.</div>
+    </div>
+
+    <script>
+        const websites = [
+            { name: "India.gov.in", icon: "🏛️", url: "https://www.india.gov.in/", desc: "National Portal of India", category: "central" },
+            { name: "Aadhaar", icon: "🆔", url: "https://uidai.gov.in/", desc: "Unique Identification Authority", category: "services" },
+            { name: "Digital India", icon: "💻", url: "https://www.digitalindia.gov.in/", desc: "Digital India Programme", category: "central" },
+            { name: "MyGov", icon: "👥", url: "https://www.mygov.in/", desc: "Citizen Engagement Platform", category: "central" },
+            { name: "Income Tax", icon: "💰", url: "https://www.incometax.gov.in/", desc: "Income Tax Department", category: "finance" },
+            { name: "GST Portal", icon: "📊", url: "https://www.gst.gov.in/", desc: "Goods and Services Tax", category: "finance" },
+            { name: "Passport Seva", icon: "📘", url: "https://www.passportindia.gov.in/", desc: "Passport Services", category: "services" },
+            { name: "EPFO", icon: "🏦", url: "https://www.epfindia.gov.in/", desc: "Employees' Provident Fund", category: "finance" },
+            { name: "IRCTC", icon: "🚂", url: "https://www.irctc.co.in/", desc: "Railway Ticket Booking", category: "transport" },
+            { name: "DigiLocker", icon: "📁", url: "https://www.digilocker.gov.in/", desc: "Digital Document Storage", category: "services" },
+            { name: "PM Jan Dhan Yojana", icon: "🏧", url: "https://pmjdy.gov.in/", desc: "Financial Inclusion Scheme", category: "finance" },
+            { name: "Swachh Bharat", icon: "🧹", url: "https://swachhbharatmission.gov.in/", desc: "Clean India Mission", category: "services" },
+            { name: "Ayushman Bharat", icon: "🏥", url: "https://pmjay.gov.in/", desc: "Health Insurance Scheme", category: "health" },
+            { name: "UMANG", icon: "📱", url: "https://web.umang.gov.in/", desc: "Unified Mobile App", category: "services" },
+            { name: "e-Hospital", icon: "🏨", url: "https://www.ehospital.gov.in/", desc: "Hospital Management System", category: "health" },
+            { name: "RTI Online", icon: "ℹ️", url: "https://rtionline.gov.in/", desc: "Right to Information", category: "services" },
+            { name: "National Portal for COVID-19", icon: "😷", url: "https://www.mygov.in/covid-19", desc: "COVID-19 Resources", category: "health" },
+            { name: "Parivahan", icon: "🚗", url: "https://parivahan.gov.in/", desc: "Transport & Driving License", category: "transport" },
+            { name: "e-District", icon: "🏢", url: "https://edistrict.gov.in/", desc: "Online District Services", category: "services" },
+            { name: "National Scholarship Portal", icon: "🎓", url: "https://scholarships.gov.in/", desc: "Scholarship Services", category: "education" },
+            { name: "NREGA", icon: "👷", url: "https://nrega.nic.in/", desc: "Rural Employment Guarantee", category: "services" },
+            { name: "Jan Aushadhi", icon: "💊", url: "https://janaushadhi.gov.in/", desc: "Affordable Medicine Stores", category: "health" },
+            { name: "CoWIN", icon: "💉", url: "https://www.cowin.gov.in/", desc: "Vaccination Registration", category: "health" },
+            { name: "NCERT", icon: "📚", url: "https://ncert.nic.in/", desc: "Educational Resources", category: "education" },
+            { name: "UGC", icon: "🎓", url: "https://www.ugc.ac.in/", desc: "University Grants Commission", category: "education" },
+            { name: "Skill India", icon: "🔧", url: "https://www.skillindia.gov.in/", desc: "Skill Development Initiative", category: "education" },
+            { name: "e-NAM", icon: "🌾", url: "https://www.enam.gov.in/", desc: "National Agriculture Market", category: "services" },
+            { name: "PM Kisan", icon: "🚜", url: "https://pmkisan.gov.in/", desc: "Farmer Income Support", category: "services" },
+            { name: "Smart Cities Mission", icon: "🏙️", url: "https://smartcities.gov.in/", desc: "Urban Development Programme", category: "central" },
+            { name: "Make in India", icon: "🏭", url: "https://www.makeinindia.com/", desc: "Manufacturing Initiative", category: "central" }
+        ];
+
+        let currentCategory = 'all';
+        let searchTerm = '';
+
+        function renderWebsites() {
+            const grid = document.getElementById('websitesGrid');
+            const noResults = document.getElementById('noResults');
+            
+            let filtered = websites.filter(site => {
+                const matchesCategory = currentCategory === 'all' || site.category === currentCategory;
+                const matchesSearch = site.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                    site.desc.toLowerCase().includes(searchTerm.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.style.display = 'none';
+                noResults.style.display = 'block';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            noResults.style.display = 'none';
+
+            grid.innerHTML = filtered.map(site => `
+                <a href="${site.url}" target="_blank" class="website-card">
+                    <span class="icon">${site.icon}</span>
+                    <div class="website-name">${site.name}</div>
+                    <div class="website-desc">${site.desc}</div>
+                    <span class="category-badge">${site.category}</span>
+                </a>
+            `).join('');
+        }
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentCategory = this.dataset.category;
+                renderWebsites();
+            });
+        });
+
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            searchTerm = e.target.value;
+            renderWebsites();
+        });
+
+        renderWebsites();
+    </script>
+</body>
+</html>
